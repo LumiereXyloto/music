@@ -1,8 +1,6 @@
-# vue-music
+## vue-music（简单文档加日常ideas）
 
-> 音乐播放器
-
-## Build Setup
+> 音乐播放器，一方面复习vue相关知识，一方面做着玩
 
 ``` bash
 # install dependencies
