@@ -1,18 +1,31 @@
 <template>
   <div class="recommend">
     <div class="recommend-content">
-      <div v-if="this.recommends.length" class="slider-wrapper">
-        <slider>
-          <div v-for="(item, index) in recommends" :key=index>
-            <a :href="item.linkUrl">
-              <img :src="item.picUrl">
-            </a>
-          </div>
-        </slider>
+      <div>
+        <div v-if="this.recommends.length" class="slider-wrapper">
+          <slider>
+            <div v-for="(item, index) in recommends" :key=index>
+              <a :href="item.linkUrl">
+                <img :src="item.picUrl">
+              </a>
+            </div>
+          </slider>
+        </div>
+        <div class="recommend-list">
+          <h1 class="list-title">热门歌单推荐</h1>
+          <ul>
+            <li v-for="(item, index) in discList" class="item" :key="index">
+              <div class="icon">
+                <img :src="item.imgurl" width="60" height="60">
+              </div>
+              <div class="text">
+                <h2 class="name" v-html="item.creator.name"></h2>
+                <p class="desc" v-html="item.dissname"></p>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="recommend-list"></div>
-        <h1 class="list-title">热门歌单推荐</h1>
-        <ul></ul>
     </div>
   </div>
 </template>
@@ -28,7 +41,8 @@ export default {
   },
   data () {
     return {
-      recommends: []
+      recommends: [],
+      discList: []
     }
   },
   created () {
