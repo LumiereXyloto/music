@@ -10,110 +10,110 @@
   </div>
 </template>
 
-<script type="text/ecmascript-6">
-  import {addClass} from 'common/js/dom'
-  import BScroll from 'better-scroll'
+<script>
+import {addClass} from 'common/js/dom'
+import BScroll from 'better-scroll'
 
-  export default {
-    name: 'slider',
-    props: {
-      loop: {
-        type: Boolean,
-        default: true
-      },
-      autoPlay: {
-        type: Boolean,
-        default: true
-      },
-      interval: {
-        type: Number,
-        default: 4000
-      }
+export default {
+  name: 'slider',
+  props: {
+    loop: {
+      type: Boolean,
+      default: true
     },
-    data() {
-      return {
-        dots: [],
-        currentPageIndex: 0
-      }
+    autoPlay: {
+      type: Boolean,
+      default: true
     },
-    mounted() {
-      setTimeout(() => {
-        this._setSliderWidth()
-        this._initDots()
-        this._initSlider()
+    interval: {
+      type: Number,
+      default: 4000
+    }
+  },
+  data() {
+    return {
+      dots: [],
+      currentPageIndex: 0
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      this._setSliderWidth()
+      this._initDots()
+      this._initSlider()
+
+      if (this.autoPlay) {
+        this._play()
+      }
+    }, 20)
+
+    window.addEventListener('resize', () => {
+      if (!this.slider) {
+        return
+      }
+      this._setSliderWidth(true)
+      this.slider.refresh()
+    })
+  },
+  destroyed() {
+    clearTimeout(this.timer) // 组件中有计时器记得清理
+  },
+  methods: {
+    _setSliderWidth(isResize) { // 添加布尔标识符因为resize之前已经给width加过2倍sliderWidth，不能再加了
+      this.children = this.$refs.sliderGroup.children
+
+      let width = 0 // width是7个dom全部宽度，包括五个图和bscroll给无缝滑动前后各添的一个dom
+      let sliderWidth = this.$refs.slider.clientWidth // 单个图宽度
+      for (let i = 0; i < this.children.length; i++) {
+        let child = this.children[i]
+        addClass(child, 'slider-item')
+
+        child.style.width = sliderWidth + 'px'
+        width += sliderWidth
+      }
+      if (this.loop && !isResize) {
+        width += 2 * sliderWidth
+      }
+      this.$refs.sliderGroup.style.width = width + 'px'
+    },
+    _initSlider () {
+      this.slider = new BScroll(this.$refs.slider, {
+        scrollX: true,
+        scrollY: false,
+        momentum: false,
+        snap: true,
+        snapLoop: this.loop,
+        snapThreshold: 0.3,
+        snapSpeed: 400
+      })
+
+      this.slider.on('scrollEnd', () => {
+        let pageIndex = this.slider.getCurrentPage().pageX
+        if (this.loop) {
+          pageIndex -= 1
+        }
+        this.currentPageIndex = pageIndex
 
         if (this.autoPlay) {
+          clearTimeout(this.timer)
           this._play()
         }
-      }, 20)
-
-      window.addEventListener('resize', () => {
-        if (!this.slider) {
-          return
-        }
-        this._setSliderWidth(true)
-        this.slider.refresh()
       })
     },
-    destroyed() {
-      clearTimeout(this.timer)
+    _initDots() {
+      this.dots = new Array(this.children.length)
     },
-    methods: {
-      _setSliderWidth(isResize) {
-        this.children = this.$refs.sliderGroup.children
-
-        let width = 0
-        let sliderWidth = this.$refs.slider.clientWidth
-        for (let i = 0; i < this.children.length; i++) {
-          let child = this.children[i]
-          addClass(child, 'slider-item')
-
-          child.style.width = sliderWidth + 'px'
-          width += sliderWidth
-        }
-        if (this.loop && !isResize) {
-          width += 2 * sliderWidth
-        }
-        this.$refs.sliderGroup.style.width = width + 'px'
-      },
-      _initSlider() {
-        this.slider = new BScroll(this.$refs.slider, {
-          scrollX: true,
-          scrollY: false,
-          momentum: false,
-          snap: true,
-          snapLoop: this.loop,
-          snapThreshold: 0.3,
-          snapSpeed: 400
-        })
-
-        this.slider.on('scrollEnd', () => {
-          let pageIndex = this.slider.getCurrentPage().pageX
-          if (this.loop) {
-            pageIndex -= 1
-          }
-          this.currentPageIndex = pageIndex
-
-          if (this.autoPlay) {
-            clearTimeout(this.timer)
-            this._play()
-          }
-        })
-      },
-      _initDots() {
-        this.dots = new Array(this.children.length)
-      },
-      _play() {
-        let pageIndex = this.currentPageIndex + 1
-        if (this.loop) {
-          pageIndex += 1
-        }
-        this.timer = setTimeout(() => {
-          this.slider.goToPage(pageIndex, 0, 400)
-        }, this.interval)
+    _play() {
+      let pageIndex = this.currentPageIndex + 1
+      if (this.loop) {
+        pageIndex += 1
       }
+      this.timer = setTimeout(() => {
+        this.slider.goToPage(pageIndex, 0, 400)// 0代表Y方向，400为间隔
+      }, this.interval)
     }
   }
+}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
