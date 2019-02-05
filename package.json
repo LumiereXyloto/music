@@ -9,7 +9,7 @@
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
-    "lint-fix": "eslint --fix --ext .js --ext .vue src/components,src/base,src/common"
+    "lint-fix": "eslint --fix --ext .js --ext .vue src/"
   },
   "dependencies": {
     "babel-runtime": "^6.0.0",
@@ -18,7 +18,8 @@
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "better-scroll": "^0.1.15",
-    "axios": "^0.16.1"
+    "axios": "^0.16.1",
+    "vue-lazyload": "1.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -23,7 +23,7 @@ export default {
     }
   },
   mounted () {
-    setTimeout(()=> {
+    setTimeout(() => { // 确保dom已经被渲染
       this._initScroll()
     }, 20)
   },
@@ -33,12 +33,12 @@ export default {
         return
       }
       this.scroll = new BScroll(this.$refs.wrapper, {
-        probeType: this.probeType,// 滑动速度类型
+        probeType: this.probeType, // 滑动速度类型
         click: this.click // 是否手动派发点击事件
       })
     },
-    enable () {
-      this.scroll && this.scroll.enable()
+    enable () { // 代理better-scroll的方法
+      this.scroll && this.scroll.enable() // 如果有this.scroll,调用enable()方法
     },
     disable () {
       this.scroll && this.scroll.disable()

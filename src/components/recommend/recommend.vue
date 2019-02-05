@@ -1,12 +1,14 @@
 <template>
   <div class="recommend">
-    <div class="recommend-content">
+    <!-- 在歌单渲染以后监听data，这样bscroll初始化的时候才不会因为块高度为0初始化失败无法滑动 -->
+    <!-- 因为discList和recommends请求是异步的，不知道谁后得到，所以在加载recommends和discList的时候都要refresh -->
+    <scroll ref="scroll" class="recommend-content" :data="discList">
       <div>
         <div v-if="this.recommends.length" class="slider-wrapper">
           <slider>
             <div v-for="(item, index) in recommends" :key=index>
               <a :href="item.linkUrl">
-                <img :src="item.picUrl">
+                <img class="needsclick" @load="loadImage" :src="item.picUrl">
               </a>
             </div>
           </slider>
@@ -16,7 +18,7 @@
           <ul>
             <li v-for="(item, index) in discList" class="item" :key="index">
               <div class="icon">
-                <img :src="item.imgurl" width="60" height="60">
+                <img v-lazy="item.imgurl" width="60" height="60">
               </div>
               <div class="text">
                 <h2 class="name" v-html="item.creator.name"></h2>
@@ -26,18 +28,20 @@
           </ul>
         </div>
       </div>
-    </div>
+    </scroll>
   </div>
 </template>
 
 <script>
+import Scroll from 'base/scroll/scroll'
 import Slider from 'base/slider/slider'
 import {getRecommend, getDiscList} from 'api/recommend'
 import {ERR_OK} from 'api/config'
 export default {
   name: 'Recommends',
   components: {
-    Slider
+    Slider,
+    Scroll
   },
   data () {
     return {
@@ -63,6 +67,12 @@ export default {
           this.discList = res.data.list
         }
       })
+    },
+    loadImage () {
+      if (!this.checkLoaded) { // 在图片加载的时候重绘只需要一次，不用每加载一张图都重绘
+        this.$refs.scroll.refresh() // 对应scroll组件代理的refresh()方法
+        this.checkLoaded = true
+      }
     }
   }
 }
