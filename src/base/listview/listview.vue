@@ -20,7 +20,6 @@
       <ul>
         <li v-for="(item, index) in shortcutList" :data-index="index" class="item"
             :class="{'current':currentIndex===index}" :key="index">{{item}}
-
         </li>
       </ul>
     </div>
@@ -45,7 +44,7 @@ export default {
   props: {
     data: {
       type: Array,
-      default: []
+      default: [] // eslint-disable-line
     }
   },
   computed: {
@@ -87,12 +86,17 @@ export default {
       this._scrollTo(anchorIndex)
     },
     onShortcutTouchMove(e) {
-      let firstTouch = e.touches[0]
-      this.touch.y2 = firstTouch.pageY
-      let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
-      let anchorIndex = parseInt(this.touch.anchorIndex) + delta
+      if (this.timer) { // 加timer提升性能
+        clearTimeout(this.timer)
+      }
+      this.timer = setTimeout(() => {
+        let firstTouch = e.touches[0]
+        this.touch.y2 = firstTouch.pageY
+        let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
+        let anchorIndex = parseInt(this.touch.anchorIndex) + delta
 
-      this._scrollTo(anchorIndex)
+        this._scrollTo(anchorIndex)
+      }, 16)
     },
     refresh() {
       this.$refs.listview.refresh()
