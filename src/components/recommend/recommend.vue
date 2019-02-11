@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend">
+  <div class="recommend"  ref="recommend">
     <!-- 在歌单渲染以后监听data，这样bscroll初始化的时候才不会因为块高度为0初始化失败无法滑动 -->
     <!-- 因为discList和recommends请求是异步的，不知道谁后得到，所以在加载recommends和discList的时候都要refresh -->
     <scroll ref="scroll" class="recommend-content" :data="discList">
@@ -41,8 +41,10 @@ import Slider from 'base/slider/slider'
 import Loading from 'base/loading/loading'
 import {getRecommend, getDiscList} from 'api/recommend'
 import {ERR_OK} from 'api/config'
+import {playlistMixin} from 'common/js/mixin'
 export default {
   name: 'Recommends',
+  mixins: [playlistMixin],
   components: {
     Slider,
     Scroll,
@@ -59,6 +61,12 @@ export default {
     this._getDiscList()
   },
   methods: {
+    handlePlaylist(playlist) {
+      const bottom = playlist.length > 0 ? '60px' : ''
+
+      this.$refs.recommend.style.bottom = bottom
+      this.$refs.scroll.refresh()
+    },
     _getRecommend () {
       getRecommend().then((res) => {
         if (res.code === ERR_OK) {

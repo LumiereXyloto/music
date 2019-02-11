@@ -44,7 +44,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(e)
         })
       }),
-      app.get('getSingerList', function (req, res) {
+      app.get('/getSingerList', function (req, res) {
         var url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
         axios.get(url, {
           headers: {

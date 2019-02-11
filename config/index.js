@@ -20,6 +20,16 @@ module.exports = {
         pathRewrite:{
           '^/api/getDiscList':''
         }
+      },
+      '/api/lyric':{ // 确保设置的代理名 一致
+        target:'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg', // 链接地址
+        bypass:function(req,res,proxyOptions){
+          req.headers.referer='https://c.y.qq.com'; // 请求referer
+          req.headers.host='c.y.qq.com'; // 也可以不写，请求会自动发送host
+        },
+        pathRewrite:{
+          '^/api/lyric':''
+        }
       }
     },
 
