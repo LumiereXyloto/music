@@ -30,6 +30,18 @@ module.exports = {
         pathRewrite:{
           '^/api/lyric':''
         }
+      },
+      '/api/getSongList': {
+        target: 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg',
+        changeOrigin: true, //允许跨域,
+        secure: false, //如果是https接口，需要配置这个参数
+        bypass:function(req,res,proxyOptions){
+          req.headers.referer='https://c.y.qq.com/'; // 请求referer
+          req.headers.host='c.y.qq.com'; // 也可以不写，请求会自动发送host
+        },
+        pathRewrite: {
+          '^/api/getSongList': ''
+        }
       }
     },
 

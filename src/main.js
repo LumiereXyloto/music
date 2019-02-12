@@ -15,6 +15,8 @@ Vue.use(VueLazyLoad, {
 })
 
 Vue.config.productionTip = false
+// window.$uri = 'http://47.96.100.173'
+// window.$uri = 'http://192.168.31.118'
 
 /* eslint-disable no-new */
 new Vue({
