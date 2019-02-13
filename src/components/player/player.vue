@@ -91,9 +91,9 @@
             <i @click.stop="togglePlaying" class="icon-mini" :class="miniIcon"></i>
           </progress-circle>
         </div>
-        <div class="control" @click.stop="showPlaylist">
+        <!-- <div class="control" @click.stop="showPlaylist">
           <i class="icon-playlist"></i>
-        </div>
+        </div> -->
       </div>
     </transition>
     <!-- <playlist ref="playlist"></playlist> -->
@@ -292,6 +292,7 @@ export default {
       }
     },
     getLyric() {
+      const currentTime = this.currentSong.duration * this.percent
       this.currentSong.getLyric().then((lyric) => {
         if (this.currentSong.lyric !== lyric) {
           return
@@ -299,6 +300,7 @@ export default {
         this.currentLyric = new Lyric(lyric, this.handleLyric)
         if (this.playing) {
           this.currentLyric.play()
+          this.currentLyric.seek(currentTime * 1000)
         }
       }).catch(() => {
         this.currentLyric = null
@@ -384,7 +386,7 @@ export default {
       const targetWidth = 40 // 小圆圈宽度
       const paddingLeft = 40 // 小圆圈左边偏移
       const paddingBottom = 30 // 小圆圈底边偏移
-      const paddingTop = 80 // 大圆圈到顶部
+      const paddingTop = 140 // 大圆圈到顶部
       const width = window.innerWidth * 0.8 // 大圆圈的直径
       const scale = targetWidth / width
       const x = -(window.innerWidth / 2 - paddingLeft)
@@ -490,7 +492,7 @@ export default {
       .middle
         position: fixed
         width: 100%
-        top: 80px
+        top: 140px
         bottom: 170px
         white-space: nowrap
         font-size: 0
@@ -663,7 +665,8 @@ export default {
       .control
         flex: 0 0 30px
         width: 30px
-        padding: 0 10px
+        padding: 0 30px
+        // padding: 0 10px
         .icon-play-mini, .icon-pause-mini, .icon-playlist
           font-size: 30px
           color: $color-theme-d

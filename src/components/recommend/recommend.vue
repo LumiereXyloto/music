@@ -7,14 +7,15 @@
         <div v-if="this.recommends.length" class="slider-wrapper">
           <slider>
             <div v-for="(item, index) in recommends" :key=index>
-              <a :href="item.linkUrl">
+              <!-- <a :href="item.linkUrl">
                 <img class="needsclick" @load="loadImage" :src="item.picUrl">
-              </a>
+              </a> -->
+              <img class="needsclick" @load="loadImage" :src="item.picUrl">
             </div>
           </slider>
         </div>
         <div class="recommend-list">
-          <h1 class="list-title">热门歌单推荐</h1>
+          <h1 class="list-title">热门歌单</h1>
           <ul>
             <li @click="selectItem(item)" v-for="(item, index) in discList" class="item" :key="index">
               <div class="icon">
@@ -120,8 +121,8 @@ export default {
         overflow: hidden
       .recommend-list
         .list-title
-          height: 65px
-          line-height: 65px
+          height: 50px
+          line-height: 50px
           text-align: center
           font-size: $font-size-medium
           color: $color-theme
