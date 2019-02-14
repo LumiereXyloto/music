@@ -15,8 +15,8 @@ Vue.use(VueLazyLoad, {
 })
 
 Vue.config.productionTip = false
-// window.$uri = 'http://47.96.100.173'
-// window.$uri = 'http://192.168.31.118'
+
+// window.$uri = 'http://192.168.31.118' // 这是我自己的服务器地址 需要代理转发的接口会使用$uri
 
 /* eslint-disable no-new */
 new Vue({

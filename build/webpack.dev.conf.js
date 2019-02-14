@@ -80,7 +80,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(e)
         })
       }),
-      app.get('/api/music', function (req, res) {//这里的路径是给前端发送请求的url
+      app.get('/music', function (req, res) {//这里的路径是给前端发送请求的url
         const url = 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg'
         // axios发送get请求，可以自己配置config
         axios.get(url, {

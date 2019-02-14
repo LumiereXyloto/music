@@ -42,6 +42,18 @@ module.exports = {
         pathRewrite: {
           '^/api/getSongList': ''
         }
+      },
+      '/api/music': {
+        target: 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg',
+        changeOrigin: true, //允许跨域,
+        secure: false, //如果是https接口，需要配置这个参数
+        bypass:function(req,res,proxyOptions){
+          req.headers.referer='https://c.y.qq.com/'; // 请求referer
+          req.headers.host='c.y.qq.com'; // 也可以不写，请求会自动发送host
+        },
+        pathRewrite: {
+          '^/api/music': ''
+        }
       }
     },
 
